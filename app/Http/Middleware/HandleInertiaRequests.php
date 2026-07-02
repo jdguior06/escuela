@@ -41,6 +41,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'menu' => $user?->rol
                 ? $user->rol->menus()->where('activo', true)->orderBy('orden')->get(['menu.id', 'nombre', 'ruta', 'icono', 'grupo', 'padre_id'])
+                    ->each(fn ($item) => $item->ruta = $request->getBaseUrl().$item->ruta)
                 : [],
             'flash' => [
                 'status' => $request->session()->get('status'),
