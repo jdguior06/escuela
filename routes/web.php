@@ -61,15 +61,16 @@ Route::middleware(['auth', 'role:Propietario|Secretaria|Estudiante'])->group(fun
     Route::get('/inscripciones/{inscripcion}/pagos', [PagoController::class, 'index'])->name('pagos.index');
     Route::post('/pagos', [PagoController::class, 'store'])->name('pagos.store');
     Route::get('/pagos/{pago}/estado', [PagoController::class, 'estado'])->name('pagos.estado');
+    Route::get('/pagos/{pago}/recibo', [PagoController::class, 'recibo'])->name('pagos.recibo');
 });
 
 Route::middleware(['auth', 'role:Propietario|Instructor'])->group(function () {
-    Route::get('/control-certificacion', [ControlCertificacionController::class, 'index'])->name('control-certificacion.index');
     Route::get('/control-certificacion/{inscripcion}/nueva', [ControlCertificacionController::class, 'create'])->name('control-certificacion.create');
     Route::post('/control-certificacion', [ControlCertificacionController::class, 'store'])->name('control-certificacion.store');
 });
 
 Route::middleware(['auth', 'role:Propietario|Instructor|Estudiante'])->group(function () {
+    Route::get('/control-certificacion', [ControlCertificacionController::class, 'index'])->name('control-certificacion.index');
     Route::get('/control-certificacion/{controlCertificacion}/pdf', [ControlCertificacionController::class, 'descargar'])->name('control-certificacion.pdf');
 });
 

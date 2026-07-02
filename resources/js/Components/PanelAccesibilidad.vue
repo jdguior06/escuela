@@ -5,9 +5,9 @@ import { useTema } from '@/composables/useTema';
 const { estado } = useTema();
 
 const temas = [
-    { valor: 'dorado', etiqueta: 'Dorado', color: '#8b5a2b' },
-    { valor: 'oliva', etiqueta: 'Oliva', color: '#5f6b3f' },
-    { valor: 'bronce', etiqueta: 'Bronce', color: '#4d3a28' },
+    { valor: 'ninos', etiqueta: 'Niños', color: '#ea580c' },
+    { valor: 'jovenes', etiqueta: 'Jóvenes', color: '#6d28d9' },
+    { valor: 'adultos', etiqueta: 'Adultos', color: '#8b5a2b' },
 ];
 
 const modos = [

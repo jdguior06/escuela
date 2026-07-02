@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\NotificarBienvenidaJob;
 use App\Models\Rol;
 use App\Models\Usuario;
 use Illuminate\Auth\Events\Registered;
@@ -53,8 +52,6 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($usuario));
-
-        NotificarBienvenidaJob::dispatch($usuario->id);
 
         Auth::login($usuario);
 

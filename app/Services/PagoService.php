@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Jobs\NotificarPagoConfirmadoJob;
 use App\Models\CuotaPlanPago;
 use App\Models\Inscripcion;
 use App\Models\MetodoPago;
@@ -175,10 +174,6 @@ class PagoService
                 CuotaPlanPago::where('inscripcion_id', $pago->inscripcion_id)
                     ->where('nro_cuota', $pago->nro_cuota)
                     ->update(['estado_cuota' => 'pagada']);
-
-                if (! $pago->notificado) {
-                    NotificarPagoConfirmadoJob::dispatch($pago->id)->afterCommit();
-                }
             }
 
             return $pago;

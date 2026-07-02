@@ -8,10 +8,12 @@ use App\Models\MetodoPago;
 use App\Models\Pago;
 use App\Models\Usuario;
 use App\Services\PagoService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DomainException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -100,6 +102,24 @@ class PagoController extends Controller
         $this->autorizar($pago->inscripcion);
 
         return response()->json(['estado_pago' => $pago->estado_pago]);
+    }
+
+    public function recibo(Pago $pago): HttpResponse
+    {
+        $this->autorizar($pago->inscripcion);
+
+        if ($pago->estado_pago !== 'pagado') {
+            abort(404);
+        }
+
+        $pago->load(['metodoPago', 'inscripcion.estudiante', 'inscripcion.curso.tipoCurso', 'inscripcion.planPago']);
+
+        $pdf = Pdf::loadView('pdf.recibo-pago', ['pago' => $pago]);
+
+        return new HttpResponse($pdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="recibo-pago-'.$pago->id.'.pdf"',
+        ]);
     }
 
     private function autorizar(Inscripcion $inscripcion): void

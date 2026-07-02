@@ -23,16 +23,20 @@ class ControlCertificacionController extends Controller
         /** @var Usuario $usuario */
         $usuario = Auth::user();
         $esInstructor = $usuario->hasRole('Instructor');
+        $esEstudiante = $usuario->hasRole('Estudiante');
 
-        $pendientes = Inscripcion::with(['estudiante', 'curso.tipoCurso'])
-            ->where('estado_inscripcion', 'activa')
-            ->whereHas('curso', fn ($query) => $query->where('estado_curso', 'inscrito'))
-            ->doesntHave('controlCertificacion')
-            ->when($esInstructor, fn ($query) => $query->whereHas('curso', fn ($q) => $q->where('instructor_id', $usuario->id)))
-            ->get();
+        $pendientes = $esEstudiante
+            ? collect()
+            : Inscripcion::with(['estudiante', 'curso.tipoCurso'])
+                ->where('estado_inscripcion', 'activa')
+                ->whereHas('curso', fn ($query) => $query->where('estado_curso', 'inscrito'))
+                ->doesntHave('controlCertificacion')
+                ->when($esInstructor, fn ($query) => $query->whereHas('curso', fn ($q) => $q->where('instructor_id', $usuario->id)))
+                ->get();
 
         $emitidas = ControlCertificacion::with(['inscripcion.estudiante', 'inscripcion.curso.tipoCurso'])
             ->when($esInstructor, fn ($query) => $query->whereHas('inscripcion.curso', fn ($q) => $q->where('instructor_id', $usuario->id)))
+            ->when($esEstudiante, fn ($query) => $query->whereHas('inscripcion', fn ($q) => $q->where('estudiante_id', $usuario->id)))
             ->orderByDesc('fecha_emision')
             ->get();
 
@@ -59,7 +63,7 @@ class ControlCertificacionController extends Controller
         $certificacion = $this->certificacionService->registrar($inscripcion, (float) $request->validated('nota'));
 
         $mensaje = $certificacion->estado_certificacion === 'aprobado'
-            ? 'Certificación registrada: aprobado. Se generó el PDF y se notificó al estudiante.'
+            ? 'Certificación registrada: aprobado. El estudiante ya puede ver y descargar su certificado.'
             : 'Certificación registrada: reprobado.';
 
         return redirect()->route('control-certificacion.index')->with('status', $mensaje);

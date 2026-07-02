@@ -56,6 +56,7 @@ const filtrar = () => {
                                 <th class="py-2 pr-4">Monto</th>
                                 <th class="py-2 pr-4">Método</th>
                                 <th class="py-2 pr-4">Estado</th>
+                                <th class="py-2 pr-4">Comprobante</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,9 +70,19 @@ const filtrar = () => {
                                 <td class="py-2 pr-4">{{ pago.monto }} Bs.</td>
                                 <td class="py-2 pr-4">{{ pago.metodo_pago?.nombre }}</td>
                                 <td class="py-2 pr-4">{{ pago.estado_pago }}</td>
+                                <td class="py-2 pr-4">
+                                    <a
+                                        v-if="pago.estado_pago === 'pagado'"
+                                        :href="route('pagos.recibo', pago.id)"
+                                        class="text-indigo-600 hover:underline"
+                                        target="_blank"
+                                    >
+                                        Descargar
+                                    </a>
+                                </td>
                             </tr>
                             <tr v-if="pagos.data.length === 0">
-                                <td colspan="7" class="py-4 text-center text-gray-500">No hay pagos registrados.</td>
+                                <td colspan="8" class="py-4 text-center text-gray-500">No hay pagos registrados.</td>
                             </tr>
                         </tbody>
                     </table>

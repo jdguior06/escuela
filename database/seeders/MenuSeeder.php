@@ -16,7 +16,7 @@ class MenuSeeder extends Seeder
             ['nombre' => 'Reservas', 'ruta' => '/reservas', 'icono' => 'calendar', 'grupo' => 'Operación', 'orden' => 2, 'roles' => ['Propietario', 'Secretaria', 'Estudiante']],
             ['nombre' => 'Cursos', 'ruta' => '/cursos', 'icono' => 'book', 'grupo' => 'Operación', 'orden' => 3, 'roles' => ['Propietario', 'Secretaria', 'Instructor']],
             ['nombre' => 'Inscripciones', 'ruta' => '/inscripciones', 'icono' => 'clipboard', 'grupo' => 'Operación', 'orden' => 4, 'roles' => ['Propietario', 'Secretaria', 'Estudiante']],
-            ['nombre' => 'Control y Certificación', 'ruta' => '/control-certificacion', 'icono' => 'award', 'grupo' => 'Operación', 'orden' => 5, 'roles' => ['Instructor', 'Propietario']],
+            ['nombre' => 'Certificados', 'ruta' => '/control-certificacion', 'icono' => 'award', 'grupo' => 'Operación', 'orden' => 5, 'roles' => ['Instructor', 'Propietario', 'Estudiante']],
             ['nombre' => 'Pagos', 'ruta' => '/pagos', 'icono' => 'credit-card', 'grupo' => 'Operación', 'orden' => 6, 'roles' => ['Secretaria', 'Propietario']],
 
             ['nombre' => 'Métodos de pago', 'ruta' => '/metodos-pago', 'icono' => 'wallet', 'grupo' => 'Catálogos', 'orden' => 7, 'roles' => ['Propietario']],

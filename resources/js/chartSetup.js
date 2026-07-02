@@ -25,8 +25,10 @@ ChartJS.register(
     Filler,
 );
 
-// Paleta de marca (dorado/oliva/bronce, ver resources/css/app.css) más tintes
-// claros para series con varios segmentos (doughnut/pie).
+// Paleta de marca fija (independiente del tema niños/jóvenes/adultos elegido,
+// ver resources/css/app.css) más tintes claros para series con varios
+// segmentos (doughnut/pie): los gráficos necesitan varios tonos distintos a
+// la vez, no un solo color de acento.
 export const paletaMarca = ['#8b5a2b', '#5f6b3f', '#4d3a28', '#c08a4f', '#8a9a63', '#7a6249'];
 
 function colorTema(variable, fallback) {

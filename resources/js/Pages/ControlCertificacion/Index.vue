@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 defineProps({
     pendientes: {
@@ -14,14 +15,17 @@ defineProps({
 });
 
 const page = usePage();
+const esEstudiante = computed(() => page.props.auth.rol === 'Estudiante');
 </script>
 
 <template>
-    <Head title="Control y Certificación" />
+    <Head :title="esEstudiante ? 'Mis certificados' : 'Control y Certificación'" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">Control y Certificación</h2>
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                {{ esEstudiante ? 'Mis certificados' : 'Control y Certificación' }}
+            </h2>
         </template>
 
         <div class="py-12">
@@ -33,7 +37,7 @@ const page = usePage();
                     {{ page.props.flash.error }}
                 </div>
 
-                <div class="bg-white p-6 shadow sm:rounded-lg">
+                <div v-if="!esEstudiante" class="bg-white p-6 shadow sm:rounded-lg">
                     <h3 class="mb-2 font-semibold text-gray-800">Pendientes de certificar</h3>
                     <table class="w-full text-left text-sm">
                         <thead class="border-b text-xs uppercase text-gray-500">
@@ -61,11 +65,13 @@ const page = usePage();
                 </div>
 
                 <div class="bg-white p-6 shadow sm:rounded-lg">
-                    <h3 class="mb-2 font-semibold text-gray-800">Certificaciones emitidas</h3>
+                    <h3 class="mb-2 font-semibold text-gray-800">
+                        {{ esEstudiante ? 'Mis certificaciones' : 'Certificaciones emitidas' }}
+                    </h3>
                     <table class="w-full text-left text-sm">
                         <thead class="border-b text-xs uppercase text-gray-500">
                             <tr>
-                                <th class="py-2 pr-4">Estudiante</th>
+                                <th v-if="!esEstudiante" class="py-2 pr-4">Estudiante</th>
                                 <th class="py-2 pr-4">Curso</th>
                                 <th class="py-2 pr-4">Nota</th>
                                 <th class="py-2 pr-4">Estado</th>
@@ -75,7 +81,7 @@ const page = usePage();
                         </thead>
                         <tbody>
                             <tr v-for="certificacion in emitidas" :key="certificacion.id" class="border-b">
-                                <td class="py-2 pr-4">
+                                <td v-if="!esEstudiante" class="py-2 pr-4">
                                     {{ certificacion.inscripcion?.estudiante?.nombre }} {{ certificacion.inscripcion?.estudiante?.apellido }}
                                 </td>
                                 <td class="py-2 pr-4">{{ certificacion.inscripcion?.curso?.tipo_curso?.nombre }}</td>
@@ -94,7 +100,9 @@ const page = usePage();
                                 </td>
                             </tr>
                             <tr v-if="emitidas.length === 0">
-                                <td colspan="6" class="py-4 text-center text-gray-500">Todavía no hay certificaciones emitidas.</td>
+                                <td :colspan="esEstudiante ? 5 : 6" class="py-4 text-center text-gray-500">
+                                    {{ esEstudiante ? 'Todavía no tienes certificaciones.' : 'Todavía no hay certificaciones emitidas.' }}
+                                </td>
                             </tr>
                         </tbody>
                     </table>

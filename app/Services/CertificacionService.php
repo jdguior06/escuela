@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Jobs\NotificarCertificadoJob;
 use App\Models\ControlCertificacion;
 use App\Models\Inscripcion;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -28,7 +27,6 @@ class CertificacionService
 
             if ($estado === 'aprobado') {
                 $certificacion->update(['pdf_path' => $this->generarPdf($certificacion)]);
-                NotificarCertificadoJob::dispatch($certificacion->id)->afterCommit();
             }
 
             return $certificacion;

@@ -72,7 +72,9 @@ class PagoFacilWebhookController extends Controller
             return response()->json(['error' => 1, 'status' => 0, 'message' => 'PedidoID inválido.', 'values' => false]);
         }
 
-        $pago = Pago::where('nro_pedido', $pedidoId)->with('inscripcion.estudiante')->first();
+        $pago = Pago::where('nro_pedido', $pedidoId)
+            ->with(['metodoPago', 'inscripcion.estudiante', 'inscripcion.curso.tipoCurso', 'inscripcion.planPago'])
+            ->first();
 
         if (! $pago) {
             return response()->json(['error' => 1, 'status' => 0, 'message' => 'Pedido no encontrado.', 'values' => false]);
