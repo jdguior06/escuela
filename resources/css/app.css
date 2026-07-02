@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Fase 5 — Temas y accesibilidad
+   Variables por tema (color de marca) y por modo (claro/oscuro), aplicadas
+   como atributos data-* en <html> por resources/js/composables/useTema.js.
+   ========================================================================== */
+
+[data-tema='dorado'] {
+    --color-accent: #8b5a2b;
+    --color-accent-hover: #6e4620;
+}
+
+[data-tema='oliva'] {
+    --color-accent: #5f6b3f;
+    --color-accent-hover: #4a5430;
+}
+
+[data-tema='bronce'] {
+    --color-accent: #4d3a28;
+    --color-accent-hover: #382a1c;
+}
+
+[data-modo-efectivo='claro'] {
+    --color-bg: #f3f4f6;
+    --color-surface: #ffffff;
+    --color-text: #1f2937;
+    --color-text-muted: #6b7280;
+    --color-border: #d1d5db;
+}
+
+[data-modo-efectivo='oscuro'] {
+    --color-bg: #111827;
+    --color-surface: #1f2937;
+    --color-text: #f3f4f6;
+    --color-text-muted: #9ca3af;
+    --color-border: #374151;
+}
+
+[data-contraste='alto'] {
+    --color-text-muted: var(--color-text);
+    --color-border: var(--color-text);
+    filter: contrast(1.1);
+}
+
+html[data-tamano='normal'] {
+    font-size: 16px;
+}
+
+html[data-tamano='grande'] {
+    font-size: 18px;
+}
+
+html[data-tamano='xgrande'] {
+    font-size: 20px;
+}
+
+/* Redirige las utilidades de Tailwind ya usadas en toda la app hacia las
+   variables de tema/modo, sin tocar cada página individual. */
+.bg-gray-100 {
+    background-color: var(--color-bg);
+}
+
+.bg-white {
+    background-color: var(--color-surface);
+}
+
+.text-gray-800,
+.text-gray-900 {
+    color: var(--color-text);
+}
+
+.text-gray-500,
+.text-gray-600,
+.text-gray-700 {
+    color: var(--color-text-muted);
+}
+
+.border-gray-100,
+.border-gray-200,
+.border-gray-300 {
+    border-color: var(--color-border);
+}
+
+.text-indigo-600,
+.text-indigo-700,
+.border-indigo-400,
+.border-indigo-500,
+.border-indigo-600 {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.bg-indigo-50 {
+    background-color: color-mix(in srgb, var(--color-text) 8%, var(--color-surface));
+}
+
+.focus\:ring-indigo-500:focus,
+.focus\:border-indigo-500:focus,
+.focus\:border-indigo-700:focus {
+    --tw-ring-color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+/* PrimaryButton.vue usa bg-gray-800/hover:bg-gray-700 como botón principal. */
+.bg-gray-800 {
+    background-color: var(--color-accent);
+}
+
+.hover\:bg-gray-700:hover {
+    background-color: var(--color-accent-hover);
+}
+
+/* Mensajes flash (éxito/error): solo se ajustan en modo oscuro, el color
+   semántico rojo/verde se mantiene igual en todos los temas. */
+[data-modo-efectivo='oscuro'] .bg-red-50 {
+    background-color: #4c1d24;
+}
+
+[data-modo-efectivo='oscuro'] .text-red-700 {
+    color: #fca5a5;
+}
+
+[data-modo-efectivo='oscuro'] .bg-green-50 {
+    background-color: #14432c;
+}
+
+[data-modo-efectivo='oscuro'] .text-green-700 {
+    color: #86efac;
+}

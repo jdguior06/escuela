@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(composer require *)",
+      "Bash(php artisan *)",
+      "Bash(psql -U postgres -d db_grupo13sa -c \"select id,nombre,grupo,orden from menu order by orden;\")",
+      "Bash(PGPASSWORD=11310598 psql -h localhost -U postgres -d db_grupo13sa -c \"select id,nombre,grupo,orden from menu order by orden;\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code} %{content_type}\\\\n\" \"http://[::1]:5173/resources/images/logo-club.png\")",
+      "Bash(pkill -f \"artisan serve|artisan queue:listen|artisan pail|vite|concurrently\")"
+    ]
+  }
+}
