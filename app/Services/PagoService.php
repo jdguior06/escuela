@@ -177,7 +177,7 @@ class PagoService
                     ->update(['estado_cuota' => 'pagada']);
 
                 if (! $pago->notificado) {
-                    NotificarPagoConfirmadoJob::dispatch($pago->id);
+                    NotificarPagoConfirmadoJob::dispatch($pago->id)->afterCommit();
                 }
             }
 

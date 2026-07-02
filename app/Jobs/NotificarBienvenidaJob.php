@@ -6,6 +6,7 @@ use App\Mail\BienvenidaMail;
 use App\Models\Usuario;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class NotificarBienvenidaJob implements ShouldQueue
@@ -18,6 +19,16 @@ class NotificarBienvenidaJob implements ShouldQueue
     {
         $usuario = Usuario::findOrFail($this->usuarioId);
 
-        Mail::to($usuario->correo)->send(new BienvenidaMail($usuario));
+        try {
+            Mail::to($usuario->correo)->send(new BienvenidaMail($usuario));
+        } catch (\Throwable $e) {
+            // No se relanza: con QUEUE_CONNECTION=sync esto corre dentro de la
+            // misma petición de registro/creación, y un fallo de correo no debe
+            // impedir que la cuenta quede creada.
+            Log::error('[bienvenida] no se pudo enviar el correo', [
+                'usuario_id' => $this->usuarioId,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

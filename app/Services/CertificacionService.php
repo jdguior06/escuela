@@ -28,7 +28,7 @@ class CertificacionService
 
             if ($estado === 'aprobado') {
                 $certificacion->update(['pdf_path' => $this->generarPdf($certificacion)]);
-                NotificarCertificadoJob::dispatch($certificacion->id);
+                NotificarCertificadoJob::dispatch($certificacion->id)->afterCommit();
             }
 
             return $certificacion;
