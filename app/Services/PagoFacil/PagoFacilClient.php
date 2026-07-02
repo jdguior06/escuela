@@ -28,8 +28,15 @@ class PagoFacilClient
             $data = $response->json();
 
             if ((int) ($data['error'] ?? 1) !== 0) {
+                Log::channel('pagos')->error('[pagofacil.login] falló', [
+                    'status_http' => $response->status(),
+                    'message' => $data['message'] ?? 'error desconocido',
+                ]);
+
                 throw new RuntimeException('PagoFacil login falló: '.($data['message'] ?? 'error desconocido'));
             }
+
+            Log::channel('pagos')->info('[pagofacil.login] token obtenido correctamente');
 
             return $data['values']['accessToken'];
         });
@@ -39,16 +46,26 @@ class PagoFacilClient
     {
         $token = $this->login();
 
+        Log::channel('pagos')->info('[pagofacil.generate-qr] solicitud', ['payload' => $payload]);
+
         $response = Http::withToken($token)
             ->withHeaders(['Response-Language' => 'es'])
             ->post(config('services.pagofacil.base_url').'/generate-qr', $payload);
 
         $data = $response->json();
-        Log::debug('[pagofacil.generate-qr] respuesta cruda', ['data' => $data]);
 
         if ((int) ($data['error'] ?? 1) !== 0) {
+            Log::channel('pagos')->error('[pagofacil.generate-qr] falló', [
+                'status_http' => $response->status(),
+                'respuesta' => $data,
+            ]);
+
             throw new RuntimeException('PagoFacil generate-qr falló: '.($data['message'] ?? 'error desconocido'));
         }
+
+        Log::channel('pagos')->info('[pagofacil.generate-qr] éxito', [
+            'transactionId' => $data['values']['transactionId'] ?? $data['transactionId'] ?? null,
+        ]);
 
         return [
             'transaction_id' => $data['values']['transactionId'] ?? $data['transactionId'],

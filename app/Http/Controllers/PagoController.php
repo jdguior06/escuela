@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 use InvalidArgumentException;
@@ -73,6 +74,13 @@ class PagoController extends Controller
         } catch (InvalidArgumentException|DomainException $e) {
             return back()->with('error', $e->getMessage());
         } catch (\Throwable $e) {
+            Log::channel('pagos')->error('[pago.store] fallo al registrar pago', [
+                'inscripcion_id' => $inscripcion->id,
+                'metodo_id' => $request->validated('metodo_id'),
+                'usuario_id' => $usuario->id,
+                'error' => $e->getMessage(),
+            ]);
+
             return back()->with('error', 'No se pudo generar el pago con PagoFácil: '.$e->getMessage());
         }
 

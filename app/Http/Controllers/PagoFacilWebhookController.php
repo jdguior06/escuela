@@ -24,7 +24,7 @@ class PagoFacilWebhookController extends Controller
         $pedidoId = (string) $request->input('PedidoID');
         $estadoNum = (int) $request->input('Estado');
 
-        Log::info('[pagofacil.callback]', [
+        Log::channel('pagos')->info('[pagofacil.callback] recibido', [
             'PedidoID' => $pedidoId,
             'Estado' => $estadoNum,
             'Fecha' => $request->input('Fecha'),
@@ -33,6 +33,11 @@ class PagoFacilWebhookController extends Controller
         ]);
 
         $pago = $this->pagoService->confirmarPago($pedidoId, $estadoNum);
+
+        Log::channel('pagos')->info('[pagofacil.callback] resultado', [
+            'PedidoID' => $pedidoId,
+            'encontrado' => (bool) $pago,
+        ]);
 
         return response()->json([
             'error' => 0,

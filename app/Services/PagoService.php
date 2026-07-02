@@ -11,6 +11,7 @@ use App\Models\Usuario;
 use App\Services\PagoFacil\PagoFacilClient;
 use DomainException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use InvalidArgumentException;
 
 class PagoService
@@ -117,6 +118,11 @@ class PagoService
                 ]],
             ]);
         } catch (\Throwable $e) {
+            Log::channel('pagos')->error('[pago.qr] generarQr lanzó excepción', [
+                'pago_id' => $pago->id,
+                'inscripcion_id' => $inscripcion->id,
+                'error' => $e->getMessage(),
+            ]);
             $pago->delete();
             throw $e;
         }
@@ -140,6 +146,11 @@ class PagoService
         $estadoTxt = Pago::ESTADOS[$estadoNum] ?? null;
 
         if (! $estadoTxt) {
+            Log::channel('pagos')->warning('[pago.confirmar] estado no reconocido', [
+                'pedido_id' => $pedidoId,
+                'estado_num' => $estadoNum,
+            ]);
+
             return null;
         }
 
@@ -147,10 +158,18 @@ class PagoService
             $pago = Pago::where('nro_pedido', $pedidoId)->lockForUpdate()->first();
 
             if (! $pago) {
+                Log::channel('pagos')->warning('[pago.confirmar] pedido no encontrado', ['pedido_id' => $pedidoId]);
+
                 return null;
             }
 
             $pago->update(['estado_pago' => $estadoTxt]);
+
+            Log::channel('pagos')->info('[pago.confirmar] estado actualizado', [
+                'pago_id' => $pago->id,
+                'pedido_id' => $pedidoId,
+                'estado' => $estadoTxt,
+            ]);
 
             if ($estadoTxt === 'pagado') {
                 CuotaPlanPago::where('inscripcion_id', $pago->inscripcion_id)

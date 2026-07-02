@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Usuario\StoreUsuarioRequest;
 use App\Http\Requests\Usuario\UpdateUsuarioRequest;
+use App\Jobs\NotificarBienvenidaJob;
 use App\Models\Rol;
 use App\Models\Usuario;
 use Illuminate\Http\RedirectResponse;
@@ -49,7 +50,9 @@ class UsuarioController extends Controller
         $datos = $request->validated();
         $datos['password'] = Hash::make($datos['password']);
 
-        Usuario::create($datos);
+        $usuario = Usuario::create($datos);
+
+        NotificarBienvenidaJob::dispatch($usuario->id);
 
         return redirect()->route('usuarios.index')->with('status', 'Usuario creado correctamente.');
     }
