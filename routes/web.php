@@ -48,6 +48,7 @@ Route::middleware(['auth', 'role:Propietario'])->group(function () {
     Route::resource('planes-pago', PlanPagoController::class)->except(['show'])->parameters(['planes-pago' => 'planPago']);
     Route::resource('tipos-curso', TipoCursoController::class)->except(['show'])->parameters(['tipos-curso' => 'tipoCurso']);
     Route::get('/roles', [RolController::class, 'index'])->name('roles.index');
+    Route::patch('/roles/{rol}/menus', [RolController::class, 'actualizarMenus'])->name('roles.actualizarMenus');
     Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.index');
     Route::get('/reportes', [ReportesController::class, 'index'])->name('reportes.index');
 });
