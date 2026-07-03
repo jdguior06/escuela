@@ -23,7 +23,7 @@ class ReservaController extends Controller
             ->each(function (Reserva $reserva) {
                 DB::transaction(function () use ($reserva) {
                     $reserva->update(['estado_reserva' => 'vencida']);
-                    $reserva->curso->update(['estado_curso' => 'disponible', 'reservado_por' => null]);
+                    $reserva->curso->update(['estado_curso' => 'disponible']);
                 });
             });
 
@@ -74,7 +74,7 @@ class ReservaController extends Controller
                     ->lockForUpdate()
                     ->firstOrFail();
 
-                $curso->update(['estado_curso' => 'reservado', 'reservado_por' => $usuarioId]);
+                $curso->update(['estado_curso' => 'reservado']);
 
                 Reserva::create([
                     'usuario_id' => $usuarioId,
@@ -111,7 +111,7 @@ class ReservaController extends Controller
 
         DB::transaction(function () use ($reserva) {
             $reserva->update(['estado_reserva' => 'cancelada']);
-            $reserva->curso->update(['estado_curso' => 'disponible', 'reservado_por' => null]);
+            $reserva->curso->update(['estado_curso' => 'disponible']);
         });
 
         return redirect()->route('reservas.index')->with('status', 'Reserva cancelada correctamente.');

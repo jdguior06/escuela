@@ -15,7 +15,7 @@ class Curso extends Model
 
     protected $fillable = [
         'fecha_inicio', 'fecha_fin', 'precio_final', 'estado_curso',
-        'instructor_id', 'vehiculo_id', 'tipo_curso_id', 'franja_horaria_id', 'reservado_por',
+        'instructor_id', 'vehiculo_id', 'tipo_curso_id', 'franja_horaria_id',
     ];
 
     public function instructor(): BelongsTo
@@ -36,11 +36,6 @@ class Curso extends Model
     public function franjaHoraria(): BelongsTo
     {
         return $this->belongsTo(FranjaHoraria::class, 'franja_horaria_id');
-    }
-
-    public function reservadoPor(): BelongsTo
-    {
-        return $this->belongsTo(Usuario::class, 'reservado_por');
     }
 
     public function inscripciones(): HasMany
