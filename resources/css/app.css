@@ -10,14 +10,19 @@
 
 /* Los 3 temas exigidos (niños/jóvenes/adultos) no solo cambian el color de
    acento: también cambian qué tan redondeadas son las tarjetas/botones
-   (--radius-*) y la escala tipográfica base (--font-scale), para que cada
-   uno tenga una identidad visual real y no solo un cambio de color. */
+   (--radius-*), la escala tipográfica base (--font-scale), la sombra de las
+   tarjetas (--shadow-card) y si los botones llevan degradado (--gradient-
+   accent), para que cada uno tenga una identidad visual real y no solo un
+   cambio de color. */
 [data-tema='adultos'] {
     --color-accent: #8b5a2b;
     --color-accent-hover: #6e4620;
     --radius-md: 0.375rem;
     --radius-lg: 0.5rem;
     --font-scale: 1;
+    --gradient-accent: none;
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --card-accent-top: none;
 }
 
 [data-tema='jovenes'] {
@@ -26,6 +31,9 @@
     --radius-md: 0.5rem;
     --radius-lg: 0.75rem;
     --font-scale: 1;
+    --gradient-accent: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    --shadow-card: 0 4px 14px -4px rgb(109 40 217 / 0.25), 0 2px 4px -2px rgb(109 40 217 / 0.15);
+    --card-accent-top: none;
 }
 
 [data-tema='ninos'] {
@@ -34,6 +42,9 @@
     --radius-md: 1rem;
     --radius-lg: 1.25rem;
     --font-scale: 1.08;
+    --gradient-accent: linear-gradient(135deg, #fb923c, #f97316, #ec4899);
+    --shadow-card: 0 10px 24px -6px rgb(234 88 12 / 0.35), 0 4px 8px -2px rgb(236 72 153 / 0.2);
+    --card-accent-top: 4px solid;
 }
 
 [data-modo-efectivo='claro'] {
@@ -42,6 +53,17 @@
     --color-text: #1f2937;
     --color-text-muted: #6b7280;
     --color-border: #d1d5db;
+}
+
+/* Tinte de fondo por tema, solo en modo claro (en oscuro se deja el mismo
+   fondo neutro para no perder contraste) — ayuda a que "se sienta" distinto
+   de un vistazo, no solo por el color de los botones. */
+[data-tema='ninos'][data-modo-efectivo='claro'] {
+    --color-bg: #fff7ed;
+}
+
+[data-tema='jovenes'][data-modo-efectivo='claro'] {
+    --color-bg: #f5f3ff;
 }
 
 [data-modo-efectivo='oscuro'] {
@@ -75,6 +97,16 @@ html[data-tamano='xgrande'] {
 
 html {
     font-size: calc(var(--tamano-base, 16px) * var(--font-scale, 1));
+}
+
+/* Color de texto por defecto del documento: cualquier elemento sin una clase
+   de color explícita (ej. <td> de las tablas, que solo llevan "py-2 pr-4")
+   hereda esto en vez del negro por defecto del navegador — por eso el
+   contenido de las tablas no cambiaba en modo oscuro aunque el encabezado sí
+   (el <th> usa text-gray-500, que ya estaba cubierto; el <td> no usa ninguna
+   clase de color). */
+body {
+    color: var(--color-text);
 }
 
 /* Redirige las utilidades de Tailwind ya usadas en toda la app hacia las
@@ -175,9 +207,20 @@ html {
 }
 
 /* PrimaryButton.vue usa bg-gray-800/hover:bg-gray-700/active:bg-gray-900
-   como botón principal — los 3 estados deben verse como el mismo botón. */
+   como botón principal — los 3 estados deben verse como el mismo botón. El
+   degradado (niños/jóvenes) se pinta encima del color sólido, así que en
+   Adultos (sin degradado) se ve exactamente igual que antes. */
 .bg-gray-800 {
     background-color: var(--color-accent);
+    background-image: var(--gradient-accent, none);
+}
+
+/* Tarjetas/paneles (patrón "bg-white p-6 shadow rounded-lg" repetido en toda
+   la app): la sombra cambia de color/tamaño por tema, y Niños además le pone
+   una franja de color arriba para que se sienta más vivo. */
+.shadow {
+    box-shadow: var(--shadow-card);
+    border-top: var(--card-accent-top, none) var(--color-accent);
 }
 
 .hover\:bg-gray-700:hover,
