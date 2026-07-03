@@ -17,7 +17,7 @@ useTema();
         </div>
 
         <div class="flex flex-col items-center gap-2">
-            <Link href="/">
+            <Link :href="route('home')">
                 <ApplicationLogo class="h-20 w-20 ring-4" :style="{ '--tw-ring-color': 'var(--color-accent)' }" />
             </Link>
             <span class="font-serif text-base font-semibold text-[var(--color-text)]">Automóvil Club Boliviano</span>
