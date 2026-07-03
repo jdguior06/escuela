@@ -18,7 +18,7 @@ const modalCerrado = ref(false);
 let intervalo;
 
 async function consultarEstado() {
-    const { data } = await axios.get(`/pagos/${props.qr.pago_id}/estado`);
+    const { data } = await axios.get(route('pagos.estado', props.qr.pago_id));
     estado.value = data.estado_pago;
 
     if (estado.value !== 'pendiente') {
