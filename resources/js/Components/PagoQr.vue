@@ -27,10 +27,20 @@ async function consultarEstado() {
     }
 }
 
+function alVolverVisible() {
+    if (document.visibilityState === 'visible') {
+        consultarEstado();
+    }
+}
+
 onMounted(() => {
     intervalo = setInterval(consultarEstado, 4000);
+    document.addEventListener('visibilitychange', alVolverVisible);
 });
-onUnmounted(() => clearInterval(intervalo));
+onUnmounted(() => {
+    clearInterval(intervalo);
+    document.removeEventListener('visibilitychange', alVolverVisible);
+});
 </script>
 
 <template>
