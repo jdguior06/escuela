@@ -2,7 +2,7 @@
 
 Sistema web para la gestión integral de una escuela de conducción. La aplicación permite administrar cursos, estudiantes, inscripciones, reservas, pagos, usuarios, permisos y procesos de certificación.
 
-> Proyecto académico y de portafolio desarrollado con Laravel, Inertia.js y Vue.js.
+> Proyecto académico desarrollado para la materia **INF513 - Sistemas de Aplicación**, carrera de Ingeniería en Sistemas, Universidad Autónoma Gabriel René Moreno (U.A.G.R.M.). Construido con Laravel, Inertia.js y Vue.js.
 
 ## Vista general
 
@@ -283,8 +283,6 @@ El flujo de pago contempla:
 4. Actualización del estado del pago.
 5. Retorno del usuario a la aplicación.
 
-Consulta [`INTEGRACION_LARAVEL.md`](INTEGRACION_LARAVEL.md) para conocer el flujo técnico detallado.
-
 ## Roles del sistema
 
 El acceso a los módulos se controla mediante roles. Entre los perfiles contemplados están:
@@ -304,13 +302,6 @@ CERTIFICACION_NOTA_MINIMA=70
 
 Cuando el estudiante cumple el criterio de aprobación, el sistema puede generar el certificado en PDF para su consulta o descarga.
 
-## Documentación adicional
-
-- [`plan_proyecto_autoescuela.md`](plan_proyecto_autoescuela.md) — planificación general del proyecto.
-- [`INTEGRACION_LARAVEL.md`](INTEGRACION_LARAVEL.md) — integración de PagoFácil con Laravel, Inertia y Vue.
-- [`PAGOS_LARAVEL_IMPLEMENTACION.md`](PAGOS_LARAVEL_IMPLEMENTACION.md) — implementación del módulo de pagos.
-- [`PAGOS_Y_CERTIFICACION.md`](PAGOS_Y_CERTIFICACION.md) — reglas de negocio de pagos y certificación.
-
 ## Estado del proyecto
 
 Proyecto en desarrollo. La base funcional incluye autenticación, gestión de usuarios y roles, cursos, inscripciones, reservas, pagos, certificación, reportes e integración con una pasarela de pago.
@@ -320,24 +311,11 @@ Proyecto en desarrollo. La base funcional incluye autenticación, gestión de us
 - Incorporar pruebas automatizadas para los flujos críticos.
 - Añadir datos demo para facilitar la instalación y presentación.
 - Completar la documentación visual con capturas de pantalla.
-- Fortalecer la validación y firma de callbacks de PagoFácil.
 - Añadir CI/CD para ejecutar pruebas y revisar la calidad del código automáticamente.
-- Mejorar la configuración inicial para PostgreSQL y SQLite.
 
-## Contribuciones
+## Autor
 
-Las contribuciones son bienvenidas. Para proponer cambios:
+**Juan Diego Guirapoigua Oregua**
+GitHub: [@jdguior06](https://github.com/jdguior06)
 
-1. Crea un fork del repositorio.
-2. Crea una rama para tu mejora:
-
-```bash
-git checkout -b feature/nueva-funcionalidad
-```
-
-3. Realiza tus cambios y agrega pruebas cuando sea posible.
-4. Envía un pull request explicando la propuesta.
-
-## Licencia
-
-Este proyecto se distribuye bajo la licencia MIT.
+Proyecto desarrollado como parte de la formación académica en Ingeniería en Sistemas, U.A.G.R.M.
